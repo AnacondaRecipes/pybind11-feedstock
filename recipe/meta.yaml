@@ -9,6 +9,7 @@ source:
   fn: pybind11-{{ version }}.tar.gz
   url: https://github.com/pybind/pybind11/archive/v{{ version }}.tar.gz
   sha256: {{ sha256 }}
+  # 5/24/2021: The patch was fixed https://github.com/pybind/pybind11/pull/2146
   #patches:
   #  - gh2146.diff
 
