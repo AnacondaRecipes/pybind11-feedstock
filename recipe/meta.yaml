@@ -15,14 +15,14 @@ build:
 
 requirements:
   build:
-    - cmake >=3.18
+    - cmake
     - make      # [unix]
     - ninja
     - {{ compiler('cxx') }}
   host:
     - python
     - pip
-    - setuptools >=42
+    - setuptools
     - wheel
   run:
     - python
