@@ -17,10 +17,10 @@ requirements:
   build:
     - cmake
     - make      # [unix]
-    - ninja
     - {{ compiler('cxx') }}
   host:
     - python
+    - ninja
     - pip
     - setuptools
   run:
