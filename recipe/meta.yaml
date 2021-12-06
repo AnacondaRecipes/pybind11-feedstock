@@ -15,9 +15,8 @@ build:
 
 requirements:
   build:
-    - cmake >=3.18
+    - cmake
     - make      # [unix]
-    - ninja
     - {{ compiler('cxx') }}
   host:
     - python
