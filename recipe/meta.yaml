@@ -18,7 +18,9 @@ requirements:
     - cmake  >=3.18
     - make      # [unix]
     - {{ compiler('cxx') }}
-  host:
+    - patch       # [not win]
+    - m2-patch    # [win]
+   host:
     - python
     - ninja
     - pip
