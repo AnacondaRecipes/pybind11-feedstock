@@ -16,33 +16,30 @@ build:
 
 requirements:
   build:
-    - cmake  >=3.18
-    - make      # [unix]
     - {{ compiler('cxx') }}
-    - patch       # [not win]
-    - m2-patch    # [win]
+    - cmake  >=3.18
+    - ninja
   host:
     - python
-    - ninja
     - pip
     - setuptools >=42
     - wheel
   run:
     - python
 
-test:
-  imports:
-    - pybind11
-  requires:
-    - pip
-  commands:
-    - test -f ${PREFIX}/share/cmake/pybind11/pybind11Config.cmake                                     # [unix]
-    - if exist %LIBRARY_PREFIX%\share\cmake\pybind11\pybind11Config.cmake (exit 0) else (exit 1)      # [win]
-    - test -f ${PREFIX}/include/pybind11/pybind11.h      # [unix]
-    - if exist %LIBRARY_INC%\pybind11\pybind11.h (exit 0) else (exit 1)      # [win]
-    - test -f $(python -c "import pybind11 as py; print(py.get_include())")/pybind11/pybind11.h      # [unix]
-    - if exist $(python -c "import pybind11 as py; print(py.get_include())")\pybind11\pybind11.h (exit 0) else (exit 1)      # [win]
-    - pip check
+#test:
+#  imports:
+#    - pybind11
+#  requires:
+#    - pip
+#  commands:
+#    - test -f ${PREFIX}/share/cmake/pybind11/pybind11Config.cmake                                     # [unix]
+#    - if exist %LIBRARY_PREFIX%\share\cmake\pybind11\pybind11Config.cmake (exit 0) else (exit 1)      # [win]
+#    - test -f ${PREFIX}/include/pybind11/pybind11.h      # [unix]
+#    - if exist %LIBRARY_INC%\pybind11\pybind11.h (exit 0) else (exit 1)      # [win]
+#    - test -f $(python -c "import pybind11 as py; print(py.get_include())")/pybind11/pybind11.h      # [unix]
+#    - if exist $(python -c "import pybind11 as py; print(py.get_include())")\pybind11\pybind11.h (exit 0) else (exit 1)      # [win]
+#    - pip check
 
 about:
   home: https://github.com/pybind/pybind11/
