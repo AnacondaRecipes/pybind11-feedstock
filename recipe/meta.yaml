@@ -1,5 +1,5 @@
-{% set version = "2.8.1" %}
-{% set sha256 = "f1bcc07caa568eb312411dde5308b1e250bd0e1bc020fae855bf9f43209940cc" %}
+{% set version = "2.9.1" %}
+{% set sha256 = "c6160321dc98e6e1184cc791fbeadd2907bb4a0ce0e447f2ea4ff8ab56550913" %}
 {% set build_number = "0" %}
 
 package:
@@ -22,10 +22,10 @@ requirements:
     - ninja
   host:
     - python
-    - pytest  # testing
-    - numpy   # testing
-    - scipy   # testing
-    - eigen   # [not s390x]  Testing, update when possible.
+    - pytest  # [not win32] Testing. (Skipping tests for win32, it's essentially deprecated a deprecated platform.)
+    - numpy   # [not win32] testing
+    - scipy   # [not win32] testing
+    - eigen   # [not (win32 or s390x)]  Testing, update when s390x has eigen.
     - pip
     - setuptools >=42
     - wheel
