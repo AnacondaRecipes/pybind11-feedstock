@@ -12,7 +12,7 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  skip: true  # [win32 and py==310] win32 is not being supported going forward.
+  skip: true  # [win32] win32 is a deprecated platform.
   number: {{ build_number }}
 
 requirements:
@@ -22,17 +22,22 @@ requirements:
     - ninja
   host:
     - python
-    - pytest  # [not win32] Testing. (Skipping tests for win32, it's essentially deprecated a deprecated platform.)
-    - numpy   # [not win32] testing
-    - scipy   # [not win32] testing
-    - eigen   # [not (win32 or s390x)]  Testing, update when s390x has eigen.
     - pip
     - setuptools >=42
     - wheel
+    # The following packages are required/desireable for the author's testing:
+    - pytest
+    - numpy
+    - scipy
+    - eigen  >=3.2.7  # [not s390x]  Update when s390x has this package.
+    - libboost >=1.56 # [not s390x]  Update when s390x has this package.
   run:
     - python
 
 test:
+  # Note: The author's build tests are enabled in the build scripts;
+  # however, they do not currently pass and the results of the check
+  # are ignored. This should be corrected as time allows.
   imports:
     - pybind11
   requires:

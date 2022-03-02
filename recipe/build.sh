@@ -4,6 +4,7 @@
 mkdir -p Build
 cd Build || exit 1
 
+
 # Generate the build files.
 cmake ${SRC_DIR} -G"Ninja" ${CMAKE_ARGS} \
       -DCMAKE_PREFIX_PATH=$PREFIX \
@@ -12,12 +13,14 @@ cmake ${SRC_DIR} -G"Ninja" ${CMAKE_ARGS} \
       -DPYBIND11_TEST=ON \
       -DCMAKE_BUILD_TYPE=Release
 
+
 # Build.
 ninja || exit 1
 
 # Perform tests.
 #ninja check || exit 1
-ninja check || true  # Keep testing active for now and fix as time allows.
+ninja check || echo "======================= Testing Failed =============================" # Keep testing active for now and fix as time allows.
+
 
 # Install.
 ninja install || exit 1

@@ -5,6 +5,7 @@ mkdir Build
 cd Build
 if errorlevel 1 exit 1
 
+
 :: Generate the build files.
 cmake %SRC_DIR% -G"Ninja" %CMAKE_ARGS% ^
       -DCMAKE_PREFIX_PATH=%LIBRARY_PREFIX% ^
