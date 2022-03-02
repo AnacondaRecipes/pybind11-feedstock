@@ -24,8 +24,8 @@ requirements:
     - python
     - pytest  # testing
     - numpy   # testing
-    - eigen   # testing
     - scipy   # testing
+    - eigen   # [not s390x]  Testing, update when possible.
     - pip
     - setuptools >=42
     - wheel
