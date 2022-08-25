@@ -1,5 +1,5 @@
-{% set version = "2.9.1" %}
-{% set sha256 = "c6160321dc98e6e1184cc791fbeadd2907bb4a0ce0e447f2ea4ff8ab56550913" %}
+{% set version = "2.9.2" %}
+{% set sha256 = "6bd528c4dbe2276635dc787b6b1f2e5316cf6b49ee3e150264e455a0d68d19c1" %}
 {% set build_number = "0" %}
 
 package:
@@ -29,8 +29,8 @@ requirements:
     - pytest
     - numpy
     - scipy
-    - eigen  >=3.2.7  # [not s390x]  Update when s390x has this package.
-    - libboost >=1.56 # [not s390x]  Update when s390x has this package.
+    - eigen  >=3.2.7
+    - libboost >=1.56
   run:
     - python
 
