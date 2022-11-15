@@ -36,8 +36,6 @@ outputs:
     script: build-pybind11-global.bat  # [win]
     requirements:
       build:
-        - python                                 # [build_platform != target_platform]
-        - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cmake
         - make  # [unix]
         - {{ compiler('cxx') }}
@@ -58,8 +56,6 @@ outputs:
     script: build-pybind11.bat  # [win]
     requirements:
       build:
-        - python                                 # [build_platform != target_platform]
-        - cross-python_{{ target_platform }}     # [build_platform != target_platform]
         - cmake
         - make  # [unix]
         - {{ compiler('cxx') }}
@@ -90,6 +86,7 @@ about:
   license_file: LICENSE
   summary: Seamless operability between C++11 and Python
   doc_url: https://pybind11.readthedocs.io/
+  dev_url: https://github.com/pybind/pybind11/
 
 extra:
   recipe-maintainers:
