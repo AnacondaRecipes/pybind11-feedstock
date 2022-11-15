@@ -1,9 +1,11 @@
-{% set version = "2.9.2" %}
-{% set sha256 = "6bd528c4dbe2276635dc787b6b1f2e5316cf6b49ee3e150264e455a0d68d19c1" %}
-{% set build_number = "0" %}
+{% set version = "2.10.1" %}
+{% set sha256 = "111014b516b625083bef701df7880f78c2243835abdb263065b6b59b960b6bad" %}
+
+# this is set to PYBIND11_INTERNALS_VERSION
+{% set abi_version = "4" %}
 
 package:
-  name: pybind11
+  name: pybind11-split
   version: {{ version }}
 
 source:
@@ -12,56 +14,86 @@ source:
   sha256: {{ sha256 }}
 
 build:
-  skip: true  # [win32] win32 is a deprecated platform.
-  number: {{ build_number }}
+  number: 0
 
-requirements:
-  build:
-    - {{ compiler('cxx') }}
-    - cmake  >=3.18
-    - ninja
-  host:
-    - python
-    - pip
-    - setuptools >=42
-    - wheel
-    # The following packages are required/desireable for the author's testing:
-    - pytest
-    - numpy
-    - scipy
-    - eigen  >=3.2.7
-    - libboost >=1.56
-  run:
-    - python
+outputs:
+  - name: pybind11-abi
+    version: {{ abi_version }}
+    build:
+      noarch: generic
+      skip: true  # [not linux64]
+      run_exports:
+        - pybind11-abi =={{ abi_version }}
+    test:
+      source_files:
+        - include/pybind11/detail/internals.h
+      commands:
+        # make sure the internals version matches the package version
+        - if [ $(grep "#define PYBIND11_INTERNALS_VERSION" include/pybind11/detail/internals.h | cut -d' ' -f3) != "{{ abi_version }}" ]; then exit 1; fi
 
-test:
-  # Note: The author's build tests are enabled in the build scripts;
-  # however, they do not currently pass and the results of the check
-  # are ignored. This should be corrected as time allows.
-  imports:
-    - pybind11
-  requires:
-    - pip
-  commands:
-    - test -f ${PREFIX}/share/cmake/pybind11/pybind11Config.cmake                                     # [unix]
-    - if exist %LIBRARY_PREFIX%\share\cmake\pybind11\pybind11Config.cmake (exit 0) else (exit 1)      # [win]
-    - test -f ${PREFIX}/include/pybind11/pybind11.h                                                   # [unix]
-    - if exist %LIBRARY_INC%\pybind11\pybind11.h (exit 0) else (exit 1)                               # [win]
-    - test -f $(python -c "import pybind11 as py; print(py.get_include())")/pybind11/pybind11.h       # [unix]
-    - if exist $(python -c "import pybind11 as py; print(py.get_include())")\pybind11\pybind11.h (exit 0) else (exit 1)      # [win]
-    - pip check
+  - name: pybind11-global
+    script: build-pybind11-global.sh  # [unix]
+    script: build-pybind11-global.bat  # [win]
+    requirements:
+      build:
+        - python                                 # [build_platform != target_platform]
+        - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+        - cmake
+        - make  # [unix]
+        - {{ compiler('cxx') }}
+      host:
+        - python
+        - pip
+        - setuptools
+      run:
+        - python
+      run_constrained:
+        - pybind11-abi =={{ abi_version }}
+    test:
+      commands:
+        - echo "works!"
+
+  - name: pybind11
+    script: build-pybind11.sh  # [unix]
+    script: build-pybind11.bat  # [win]
+    requirements:
+      build:
+        - python                                 # [build_platform != target_platform]
+        - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+        - cmake
+        - make  # [unix]
+        - {{ compiler('cxx') }}
+      host:
+        - python
+        - pip
+        - setuptools
+      run:
+        - python
+        - {{ pin_subpackage("pybind11-global", exact=True) }}
+      run_constrained:
+        - pybind11-abi =={{ abi_version }}
+    test:
+      imports:
+        - pybind11
+      commands:
+        - test -f ${PREFIX}/share/cmake/pybind11/pybind11Config.cmake                                     # [unix]
+        - if exist %LIBRARY_PREFIX%\share\cmake\pybind11\pybind11Config.cmake (exit 0) else (exit 1)      # [win]
+        - test -f ${PREFIX}/include/pybind11/pybind11.h      # [unix]
+        - if exist %LIBRARY_INC%\pybind11\pybind11.h (exit 0) else (exit 1)      # [win]
+        - test -f $(python -c "import pybind11 as py; print(py.get_include())")/pybind11/pybind11.h      # [unix]
+        - if exist $(python -c "import pybind11 as py; print(py.get_include())")\pybind11\pybind11.h (exit 0) else (exit 1)      # [win]
 
 about:
   home: https://github.com/pybind/pybind11/
   license: BSD-3-Clause
   license_family: BSD
-  summary: Seamless operability between C++11 and Python
   license_file: LICENSE
-  doc_url: https://github.com/pybind/pybind11/blob/master/README.rst
-  dev_url: https://github.com/pybind/pybind11/
+  summary: Seamless operability between C++11 and Python
+  doc_url: https://pybind11.readthedocs.io/
 
 extra:
   recipe-maintainers:
     - ax3l
     - SylvainCorlay
     - wjakob
+    - henryiii
