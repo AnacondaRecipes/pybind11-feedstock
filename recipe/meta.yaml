@@ -1,5 +1,5 @@
-{% set version = "2.10.1" %}
-{% set sha256 = "111014b516b625083bef701df7880f78c2243835abdb263065b6b59b960b6bad" %}
+{% set version = "2.10.4" %}
+{% set sha256 = "832e2f309c57da9c1e6d4542dedd34b24e4192ecb4d62f6f4866a737454c9970" %}
 
 # this is set to PYBIND11_INTERNALS_VERSION
 {% set abi_version = "4" %}
@@ -29,7 +29,7 @@ outputs:
         - include/pybind11/detail/internals.h
       commands:
         # make sure the internals version matches the package version
-        - if [ $(grep "#define PYBIND11_INTERNALS_VERSION" include/pybind11/detail/internals.h | cut -d' ' -f3) != "{{ abi_version }}" ]; then exit 1; fi
+        - if [[ $(grep "#[[:blank:]]*define PYBIND11_INTERNALS_VERSION" include/pybind11/detail/internals.h | rev | cut -d' ' -f1) != "{{ abi_version }}" ]]; then exit 1; fi
 
   - name: pybind11-global
     script: build-pybind11-global.sh  # [unix]
