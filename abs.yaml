@@ -1,0 +1,4 @@
+# the conda-build parameters to use for disabling --skip-existing
+# See https://github.com/conda/conda-build/issues/4856.
+build_parameters:
+  - "--error-overlinking"
