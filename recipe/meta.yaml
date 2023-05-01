@@ -3,6 +3,7 @@
 
 # this is set to PYBIND11_INTERNALS_VERSION
 {% set abi_version = "4" %}
+{% set abi_buildnumber = "1" %}
 
 package:
   name: pybind11-split
@@ -20,6 +21,7 @@ outputs:
   - name: pybind11-abi
     version: {{ abi_version }}
     build:
+      number: {{ abi_buildnumber }}
       noarch: generic
       skip: true  # [not linux and x86_64]
       run_exports:
