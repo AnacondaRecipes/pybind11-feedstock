@@ -2,6 +2,8 @@
 {% set sha256 = "bf8f242abd1abcd375d516a7067490fb71abd79519a282d22b6e4d19282185a7" %}
 
 # this is set to PYBIND11_INTERNALS_VERSION
+# pybind11 now defines two ABI version. 4 and 5 for 3.12+ or msvc.
+# https://github.com/pybind/pybind11/blob/v2.12.0/include/pybind11/detail/internals.h#L40
 {% set abi_version = "4" %}     # [py<312 and not win]
 {% set abi_buildnumber = "1" %} # [py<312 and not win]
 {% set abi_version = "5" %}     # [py>=312 or win]
