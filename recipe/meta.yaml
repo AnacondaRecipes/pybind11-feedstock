@@ -2,8 +2,10 @@
 {% set sha256 = "bf8f242abd1abcd375d516a7067490fb71abd79519a282d22b6e4d19282185a7" %}
 
 # this is set to PYBIND11_INTERNALS_VERSION
-{% set abi_version = "4" %}
-{% set abi_buildnumber = "1" %}
+{% set abi_version = "4" %}     # [py<312 and not win]
+{% set abi_buildnumber = "1" %} # [py<312 and not win]
+{% set abi_version = "5" %}     # [py>=312 or win]
+{% set abi_buildnumber = "0" %} # [py>=312 or win]
 
 package:
   name: pybind11-split
@@ -31,7 +33,7 @@ outputs:
         - include/pybind11/detail/internals.h
       commands:
         # make sure the internals version matches the package version
-        - if [[ $(grep "#[[:blank:]]*define PYBIND11_INTERNALS_VERSION" include/pybind11/detail/internals.h | rev | cut -d' ' -f1) != "{{ abi_version }}" ]]; then exit 1; fi
+        - matched=false; while read -r version; do [ "$version" -eq "{{ abi_version }}" ] && { matched=true; break; }; done < <(awk '/define PYBIND11_INTERNALS_VERSION/{print $NF}' include/pybind11/detail/internals.h); [ "$matched" = true ] && exit 0 || exit 1
 
   - name: pybind11-global
     script: build-pybind11-global.sh  # [unix]
