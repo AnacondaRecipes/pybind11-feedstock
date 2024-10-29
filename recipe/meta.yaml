@@ -27,7 +27,7 @@ outputs:
     build:
       number: {{ abi_buildnumber }}
       noarch: generic
-      skip: true  # [not linux and x86_64]
+      skip: true  # [not linux-64]
       run_exports:
         - pybind11-abi =={{ abi_version }}
     test:
