@@ -1,4 +1,4 @@
-del build 2>null
+rmdir /S /Q build
 
 cmake -G "Visual Studio 16 2019" -S . -B ./build -DBUILD_TESTING=OFF -DPYBIND11_NOPYTHON=ON^
   -DPYTHON_EXECUTABLE:FILEPATH="%PYTHON%"      ^
