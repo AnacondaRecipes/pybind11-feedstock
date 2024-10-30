@@ -1,4 +1,0 @@
-# Disable "--skip-existing" as it causes noarch/pybind11-abi-4 to not get built.
-build_parameters:
-  - "--suppress-variables"
-  - "--error-overlinking"
