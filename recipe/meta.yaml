@@ -32,6 +32,7 @@ outputs:
     build:
       number: {{ abi_buildnumber }}
       noarch: generic
+      # This is currently skipped until `skip-existing` works correctly. 
       skip: true
       run_exports:
         - pybind11-abi =={{ abi_version }}
