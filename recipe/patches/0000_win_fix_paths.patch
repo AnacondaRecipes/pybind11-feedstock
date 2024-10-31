@@ -1,8 +1,8 @@
 diff --git a/setup.py b/setup.py
-index 96563c1a..66312029 100644
+index 96563c1a..80e6ae5d 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -122,10 +122,15 @@ def remove_output(*sources: str) -> Generator[None, None, None]:
+@@ -122,10 +122,14 @@ def remove_output(*sources: str) -> Generator[None, None, None]:
  with remove_output("pybind11/include", "pybind11/share"):
      # Generate the files if they are not present.
      with TemporaryDirectory() as tmpdir:
@@ -14,7 +14,6 @@ index 96563c1a..66312029 100644
 +            '-DPYTHON_EXECUTABLE:FILEPATH='+os.environ.get("PYTHON",""),
 +            '-DPYTHON_LIBRARY:FILEPATH='+os.environ.get("PYTHON_LIBRARY",""),
 +            '-DPYTHON_INCLUDE_DIR:PATH='+os.environ.get("PREFIX","")+ '\include',
-+            # '-DCMAKE_INSTALL_PREFIX='+os.environ.get("LIBRARY_PREFIX",""),
 +            '-DCMAKE_PREFIX_PATH='+os.environ.get("LIBRARY_PREFIX",""),
              "-Dprefix_for_pc_file=${pcfiledir}/../../",
          ]
