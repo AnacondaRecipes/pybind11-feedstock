@@ -1,5 +1,5 @@
-{% set version = "2.12.0" %}
-{% set sha256 = "bf8f242abd1abcd375d516a7067490fb71abd79519a282d22b6e4d19282185a7" %}
+{% set version = "2.12.1" %}
+{% set sha256 = "5326a86a4b3c80d4cf05ecfe0127a699ed6449c185a66f1b77d98e4645c51ba3" %}
 
 # this is set to PYBIND11_INTERNALS_VERSION
 # pybind11 now defines two ABI version. 4 and 5 for 3.12+ or msvc.
@@ -17,10 +17,15 @@ source:
   fn: pybind11-{{ version }}.tar.gz
   url: https://github.com/pybind/pybind11/archive/v{{ version }}.tar.gz
   sha256: {{ sha256 }}
+  patches:  # [win]
+    - patches/0000_win_fix_paths.patch  # [win]
 
 build:
   number: 0
 
+requirements:
+  build:        # [win]
+    - m2-patch  # [win]
 outputs:
   - name: pybind11-abi
     version: {{ abi_version }}
@@ -28,6 +33,8 @@ outputs:
       number: {{ abi_buildnumber }}
       noarch: generic
       skip: true  # [not linux and x86_64]
+      # This is currently skipped until `skip-existing` works correctly. 
+      skip: true
       run_exports:
         - pybind11-abi =={{ abi_version }}
     test:
@@ -91,7 +98,7 @@ outputs:
         - test -f ${PREFIX}/include/pybind11/pybind11.h      # [unix]
         - if exist %LIBRARY_INC%\pybind11\pybind11.h (exit 0) else (exit 1)      # [win]
         - test -f $(python -c "import pybind11 as py; print(py.get_include())")/pybind11/pybind11.h      # [unix]
-        - if exist $(python -c "import pybind11 as py; print(py.get_include())")\pybind11\pybind11.h (exit 0) else (exit 1)      # [win]
+        - if not exist %SP_DIR%\pybind11\include\pybind11\pybind11.h exit 1      # [win]
 
 about:
   home: https://github.com/pybind/pybind11/
