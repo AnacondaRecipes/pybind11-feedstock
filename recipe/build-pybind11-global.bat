@@ -3,4 +3,7 @@
 set PYBIND11_GLOBAL_SDIST=1
 set PYBIND11_GLOBAL_PREFIX=Library
 %PYTHON% -m pip install . -vv --no-build-isolation --no-deps
+
+:: Copy the headers to the global include directory to match how the pip package behaves. 
+cp -r %PREFIX%/include/pybind11_global/* %PREFIX%/include
 if errorlevel 1 exit 1
