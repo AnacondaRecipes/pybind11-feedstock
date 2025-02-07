@@ -21,7 +21,7 @@ source:
     - patches/0000_win_fix_paths.patch  # [win]
 
 build:
-  number: 0
+  number: 1
 
 requirements:
   build:        # [win]
