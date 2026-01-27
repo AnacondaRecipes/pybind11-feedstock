@@ -49,6 +49,7 @@ outputs:
     requirements:
       build:
         - cmake
+        - ninja  # [win]
         - make  # [unix]
         - {{ compiler('cxx') }}
       host:
@@ -73,6 +74,7 @@ outputs:
     requirements:
       build:
         - cmake
+        - ninja  # [win]
         - make  # [unix]
         - {{ compiler('cxx') }}
       host:
