@@ -1,14 +1,13 @@
-{% set version = "2.13.6" %}
-{% set sha256 = "e08cb87f4773da97fa7b5f035de8763abc656d87d5773e62f6da0587d1f0ec20" %}
+{% set version = "3.0.3" %}
+{% set sha256 = "787459e1e186ee82001759508fefa408373eae8a076ffe0078b126c6f8f0ec5e" %}
+{% set abi_version = "4" %}  # [py<312 and not win]
+{% set abi_version = "5" %}  # [py>=312 or win]
+{% set abi_buildnumber = "1" %}  # [py<312 and not win]
+{% set abi_buildnumber = "0" %}  # [py>=312 or win]
 
 # this is set to PYBIND11_INTERNALS_VERSION
 # pybind11 now defines two ABI version. 4 and 5 for 3.12+ or msvc.
 # https://github.com/pybind/pybind11/blob/v2.12.0/include/pybind11/detail/internals.h#L40
-{% set abi_version = "4" %}     # [py<312 and not win]
-{% set abi_buildnumber = "1" %} # [py<312 and not win]
-{% set abi_version = "5" %}     # [py>=312 or win]
-{% set abi_buildnumber = "0" %} # [py>=312 or win]
-
 package:
   name: pybind11-split
   version: {{ version }}
@@ -21,18 +20,18 @@ source:
     - patches/0000_win_fix_paths.patch  # [win]
 
 build:
-  number: 1
+  number: 0
 
 requirements:
-  build:        # [win]
-    - m2-patch  # [win]
+  build:  # [win]
+
 outputs:
   - name: pybind11-abi
     version: {{ abi_version }}
     build:
       number: {{ abi_buildnumber }}
       noarch: generic
-      # This is currently skipped until `skip-existing` works correctly. 
+      # This is currently skipped until `skip-existing` works correctly.
       skip: true
       run_exports:
         - pybind11-abi =={{ abi_version }}
@@ -42,7 +41,6 @@ outputs:
       commands:
         # make sure the internals version matches the package version
         - matched=false; while read -r version; do [ "$version" -eq "{{ abi_version }}" ] && { matched=true; break; }; done < <(awk '/define PYBIND11_INTERNALS_VERSION/{print $NF}' include/pybind11/detail/internals.h); [ "$matched" = true ] && exit 0 || exit 1
-
   - name: pybind11-global
     script: build-pybind11-global.sh  # [unix]
     script: build-pybind11-global.bat  # [win]
@@ -66,7 +64,6 @@ outputs:
       commands:
         - pip check
         - echo "works!"
-
   - name: pybind11
     script: build-pybind11.sh  # [unix]
     script: build-pybind11.bat  # [win]
@@ -92,12 +89,12 @@ outputs:
         - pybind11
       commands:
         - pip check
-        - test -f ${PREFIX}/share/cmake/pybind11/pybind11Config.cmake                                     # [unix]
-        - if exist %LIBRARY_PREFIX%\share\cmake\pybind11\pybind11Config.cmake (exit 0) else (exit 1)      # [win]
-        - test -f ${PREFIX}/include/pybind11/pybind11.h      # [unix]
-        - if exist %LIBRARY_INC%\pybind11\pybind11.h (exit 0) else (exit 1)      # [win]
-        - test -f $(python -c "import pybind11 as py; print(py.get_include())")/pybind11/pybind11.h      # [unix]
-        - if not exist %SP_DIR%\pybind11\include\pybind11\pybind11.h exit 1      # [win]
+        - test -f ${PREFIX}/share/cmake/pybind11/pybind11Config.cmake  # [unix]
+        - if exist %LIBRARY_PREFIX%\share\cmake\pybind11\pybind11Config.cmake (exit 0) else (exit 1)  # [win]
+        - test -f ${PREFIX}/include/pybind11/pybind11.h  # [unix]
+        - if exist %LIBRARY_INC%\pybind11\pybind11.h (exit 0) else (exit 1)  # [win]
+        - test -f $(python -c "import pybind11 as py; print(py.get_include())")/pybind11/pybind11.h  # [unix]
+        - if not exist %SP_DIR%\pybind11\include\pybind11\pybind11.h exit 1  # [win]
 
 about:
   home: https://github.com/pybind/pybind11/
