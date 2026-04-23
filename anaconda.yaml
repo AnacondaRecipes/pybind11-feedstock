@@ -4,5 +4,4 @@ upstream_sources:
       identifier: pybind11
     packages:
       - pybind11
-      - pybind11-abi
       - pybind11-global
