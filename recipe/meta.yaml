@@ -98,9 +98,9 @@ outputs:
         - pybind11
       commands:
         - pip check
-        - pybind11-config --version                        
-        - pybind11-config --includes                                                                                                                                
-        - pkg-config --modversion pybind11   
+        - pybind11-config --version
+        - pybind11-config --includes
+        - pkg-config --modversion pybind11
         - test -f ${PREFIX}/share/cmake/pybind11/pybind11Config.cmake                                 # [unix]
         - test -f ${PREFIX}/include/pybind11/pybind11.h                                               # [unix]
         - test -f $(python -c "import pybind11 as py; print(py.get_include())")/pybind11/pybind11.h   # [unix]
