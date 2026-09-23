@@ -4,7 +4,7 @@
 {% set abi_buildnumber = "0" %}
 
 package:
-  name: {{ name|lower }}-split
+  name: {{ name }}-split
   version: {{ version }}
 
 source:
@@ -14,6 +14,7 @@ source:
 build:
   number: 0
 
+# Upstream source - https://github.com/pybind/pybind11/blob/v3.1.0/pyproject.toml
 requirements:
   build:
     - {{ stdlib('c') }}
@@ -29,7 +30,7 @@ requirements:
     - python
 
 outputs:
-  - name: pybind11-abi
+  - name: {{ name }}-abi
     version: {{ abi_version }}
     build:
       number: {{ abi_buildnumber }}
@@ -43,7 +44,7 @@ outputs:
         - python
       commands:
         - python -c "import re,sys; v=re.findall(r'PYBIND11_INTERNALS_VERSION\s+(\d+)', open('include/pybind11/detail/internals.h').read()); sys.exit(0 if '{{ abi_version }}' in v else 1)"
-  - name: pybind11-global
+  - name: {{ name }}-global
     script: build-pybind11-global.sh  # [unix]
     script: build-pybind11-global.bat  # [win]
     requirements:
@@ -66,7 +67,7 @@ outputs:
         - pip
       commands:
         - pip check
-  - name: pybind11
+  - name: {{ name }}
     build:
       entry_points:
         - pybind11-config = pybind11.__main__:main
