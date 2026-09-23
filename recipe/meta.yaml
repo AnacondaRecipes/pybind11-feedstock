@@ -1,6 +1,7 @@
 {% set name = "pybind11" %}
 {% set version = "3.1.0" %}
-{% set abi_version = "11" %}
+# Upstream source - https://github.com/pybind/pybind11/blob/v3.1.0/include/pybind11/detail/internals.h
+{% set abi_version = "12" %}
 {% set abi_buildnumber = "0" %}
 
 package:
