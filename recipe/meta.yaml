@@ -1,19 +1,21 @@
 {% set name = "pybind11" %}
-{% set version = "3.0.4" %}
-{% set abi_version = "11" %}
+{% set version = "3.1.0" %}
+# Upstream source - https://github.com/pybind/pybind11/blob/v3.1.0/include/pybind11/detail/internals.h
+{% set abi_version = "12" %}
 {% set abi_buildnumber = "0" %}
 
 package:
-  name: {{ name|lower }}-split
+  name: {{ name }}-split
   version: {{ version }}
 
 source:
   url: https://github.com/pybind/{{ name }}/archive/v{{ version }}.tar.gz
-  sha256: 74b6a2c2b4573a400cafb6ecbf60c98df300cd3d0041296b913d02b2cbbb2676
+  sha256: ef712655692a2e9bf7bb7874c022564a45f91d847ddee987e720cd9e28849665
 
 build:
   number: 0
-  
+
+# Upstream source - https://github.com/pybind/pybind11/blob/v3.1.0/pyproject.toml
 requirements:
   build:
     - {{ stdlib('c') }}
@@ -29,7 +31,7 @@ requirements:
     - python
 
 outputs:
-  - name: pybind11-abi
+  - name: {{ name }}-abi
     version: {{ abi_version }}
     build:
       number: {{ abi_buildnumber }}
@@ -43,8 +45,7 @@ outputs:
         - python
       commands:
         - python -c "import re,sys; v=re.findall(r'PYBIND11_INTERNALS_VERSION\s+(\d+)', open('include/pybind11/detail/internals.h').read()); sys.exit(0 if '{{ abi_version }}' in v else 1)"
-
-  - name: pybind11-global
+  - name: {{ name }}-global
     script: build-pybind11-global.sh  # [unix]
     script: build-pybind11-global.bat  # [win]
     requirements:
@@ -67,8 +68,7 @@ outputs:
         - pip
       commands:
         - pip check
-
-  - name: pybind11
+  - name: {{ name }}
     build:
       entry_points:
         - pybind11-config = pybind11.__main__:main
@@ -101,12 +101,12 @@ outputs:
         - pybind11-config --version
         - pybind11-config --includes
         - pkg-config --modversion pybind11
-        - test -f ${PREFIX}/share/cmake/pybind11/pybind11Config.cmake                                 # [unix]
-        - test -f ${PREFIX}/include/pybind11/pybind11.h                                               # [unix]
-        - test -f $(python -c "import pybind11 as py; print(py.get_include())")/pybind11/pybind11.h   # [unix]
-        - if not exist %LIBRARY_PREFIX%\share\cmake\pybind11\pybind11Config.cmake exit 1              # [win]
-        - if not exist %LIBRARY_INC%\pybind11\pybind11.h exit 1                                       # [win]
-        - if not exist %SP_DIR%\pybind11\include\pybind11\pybind11.h exit 1                           # [win]
+        - test -f ${PREFIX}/share/cmake/pybind11/pybind11Config.cmake  # [unix]
+        - test -f ${PREFIX}/include/pybind11/pybind11.h  # [unix]
+        - test -f $(python -c "import pybind11 as py; print(py.get_include())")/pybind11/pybind11.h  # [unix]
+        - if not exist %LIBRARY_PREFIX%\share\cmake\pybind11\pybind11Config.cmake exit 1  # [win]
+        - if not exist %LIBRARY_INC%\pybind11\pybind11.h exit 1  # [win]
+        - if not exist %SP_DIR%\pybind11\include\pybind11\pybind11.h exit 1  # [win]
 
 about:
   home: https://github.com/pybind/pybind11
