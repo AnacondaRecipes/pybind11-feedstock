@@ -106,7 +106,8 @@ outputs:
         - test -f $(python -c "import pybind11 as py; print(py.get_include())")/pybind11/pybind11.h   # [unix]
         - if not exist %LIBRARY_PREFIX%\share\cmake\pybind11\pybind11Config.cmake exit 1              # [win]
         - if not exist %LIBRARY_INC%\pybind11\pybind11.h exit 1                                       # [win]
-        - if not exist %SP_DIR%\pybind11\include\pybind11\pybind11.h exit 1                           # [win]
+        # py3.15 on Windows installs to lib\python\site-packages, which %SP_DIR% does not track; ask pybind11 itself.
+        - python -c "import os, pybind11; h = os.path.join(pybind11.get_include(), 'pybind11', 'pybind11.h'); assert os.path.isfile(h), h"  # [win]
 
 about:
   home: https://github.com/pybind/pybind11
