@@ -1,7 +1,7 @@
 {% set name = "pybind11" %}
 {% set version = "3.0.4" %}
 {% set abi_version = "11" %}
-{% set abi_buildnumber = "0" %}
+{% set abi_buildnumber = "1" %}
 
 package:
   name: {{ name|lower }}-split
