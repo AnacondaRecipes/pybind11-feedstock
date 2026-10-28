@@ -51,6 +51,7 @@ outputs:
         - cmake
         - make  # [unix]
         - {{ compiler('cxx') }}
+        - {{ stdlib('c') }}
       host:
         - python
         - pip
@@ -75,6 +76,7 @@ outputs:
         - cmake
         - make  # [unix]
         - {{ compiler('cxx') }}
+        - {{ stdlib('c') }}
       host:
         - python
         - pip
