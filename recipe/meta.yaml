@@ -21,11 +21,11 @@ source:
     - patches/0000_win_fix_paths.patch  # [win]
 
 build:
-  number: 1
+  number: 2
 
 requirements:
-  build:        # [win]
-    - m2-patch  # [win]
+  build:           # [win]
+    - msys2-patch  # [win]
 outputs:
   - name: pybind11-abi
     version: {{ abi_version }}
@@ -49,8 +49,10 @@ outputs:
     requirements:
       build:
         - cmake
+        - ninja-base  # [win]
         - make  # [unix]
         - {{ compiler('cxx') }}
+        - {{ stdlib('c') }}
       host:
         - python
         - pip
@@ -73,8 +75,10 @@ outputs:
     requirements:
       build:
         - cmake
+        - ninja-base  # [win]
         - make  # [unix]
         - {{ compiler('cxx') }}
+        - {{ stdlib('c') }}
       host:
         - python
         - pip
