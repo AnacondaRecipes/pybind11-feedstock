@@ -49,7 +49,7 @@ outputs:
     requirements:
       build:
         - cmake
-        - ninja  # [win]
+        - ninja-base  # [win]
         - make  # [unix]
         - {{ compiler('cxx') }}
         - {{ stdlib('c') }}
@@ -75,7 +75,7 @@ outputs:
     requirements:
       build:
         - cmake
-        - ninja  # [win]
+        - ninja-base  # [win]
         - make  # [unix]
         - {{ compiler('cxx') }}
         - {{ stdlib('c') }}

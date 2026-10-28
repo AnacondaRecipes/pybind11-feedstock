@@ -3,11 +3,9 @@
 
 :: Override the CMake generator to match the available Visual Studio version
 :: This is necessary because pybind11's setup.py hardcodes VS2019 generator
-if defined CMAKE_GENERATOR (
-    echo Using CMAKE_GENERATOR=%CMAKE_GENERATOR%
-) else (
-    set CMAKE_GENERATOR=Ninja
-)
+set CMAKE_GENERATOR=Ninja
+set CMAKE_GENERATOR_PLATFORM=
+set CMAKE_GENERATOR_TOOLSET=
 
 set PYBIND11_GLOBAL_SDIST=1
 set PYBIND11_GLOBAL_PREFIX=Library
